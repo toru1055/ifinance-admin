@@ -46,8 +46,12 @@ public class IndustryHandler extends BaseEntityHandler {
   protected void show(Integer id) {
     System.out.println("Show " + tableName + ".");
     Industry industry = industryManager.find(id);
-    System.out.println("id: " + industry.getId());
-    System.out.println("name: " + industry.getName());
+    if(industry != null) {
+      System.out.println("id: " + industry.getId());
+      System.out.println("name: " + industry.getName());
+    } else {
+      System.out.println("id = " + id + ": does not exist");
+    }
   }
 
   @Override
@@ -55,22 +59,31 @@ public class IndustryHandler extends BaseEntityHandler {
     Scanner scan = new Scanner(System.in);
     System.out.println("Update " + tableName + ".");
     Industry industry = industryManager.find(id);
-    System.out.print("name(" + industry.getName() + "): ");
-    String name = scan.next();
-    if(name != null && name.length() > 0) {
-      industry.setName(name);
-      if(industryManager.update(industry)) {
-        System.out.println("Success.");
-      } else {
-        System.out.println("Failed.");
+    if(industry != null) {
+      System.out.print("name(" + industry.getName() + "): ");
+      String name = scan.next();
+      if(name != null && name.length() > 0) {
+        industry.setName(name);
+        if(industryManager.update(industry)) {
+          System.out.println("Success.");
+        } else {
+          System.out.println("Failed.");
+        }
       }
+    } else {
+      System.out.println("id = " + id + ": does not exist");
     }
   }
 
   @Override
   protected void remove(Integer id) {
     System.out.println("Remove " + tableName + ".");
-    industryManager.remove(id);
+    try {
+      industryManager.remove(id);
+      System.out.println("Success.");
+    } catch(Exception e) {
+      System.out.println("Failed.");
+    }
   }
 
   @Override
@@ -104,4 +117,5 @@ public class IndustryHandler extends BaseEntityHandler {
       e.printStackTrace();
     }
   }
+
 }
