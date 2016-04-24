@@ -12,20 +12,23 @@ public class CommandHandler {
         new IndustryHandler().exec(args);
       }
       return;
-    }
-    do {
-      System.out.print("ifinance> ");
-      String line = scan.nextLine();
-      line = line.replaceAll(" +", " ")
-        .replaceAll("^ ", "")
-        .replaceAll(" $", "");
-      String[] commands = line.split(" ");
-      if(commands.length >= 2) {
-        if("industry".equals(commands[0])) {
-          new IndustryHandler().exec(commands);
+    } else {
+      do {
+        System.out.print("ifinance> ");
+        String line = scan.nextLine();
+        line = line.replaceAll(" +", " ")
+          .replaceAll("^ ", "")
+          .replaceAll(" $", "");
+        String[] commands = line.split(" ");
+        if(commands.length >= 2) {
+          if("industry".equals(commands[0])) {
+            new IndustryHandler().exec(commands);
+          } else if("scraper".equals(commands[0])) {
+          } else if("subscription".equals(commands[0])) {
+          }
         }
-      }
-    } while(scan.hasNextLine());
+      } while(scan.hasNextLine());
+    }
     CommonEntityManager.closeFactory();
   }
 }

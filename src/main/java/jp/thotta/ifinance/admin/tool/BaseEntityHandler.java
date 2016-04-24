@@ -18,10 +18,14 @@ public abstract class BaseEntityHandler {
           this.show(Integer.parseInt(option));
         } else if("update".equals(method)) {
           this.update(Integer.parseInt(option));
+        } else if("remove".equals(method)) {
+          this.remove(Integer.parseInt(option));
         } else if("export".equals(method)) {
           this._export(option);
         } else if("import".equals(method)) {
           this._import(option);
+        } else {
+          System.err.println("wrong statement.");
         }
       }
     }
@@ -31,6 +35,7 @@ public abstract class BaseEntityHandler {
   abstract protected void list();
   abstract protected void show(Integer id);
   abstract protected void update(Integer id);
+  abstract protected void remove(Integer id);
   abstract protected void _export(String filePath);
   abstract protected void _import(String filePath);
 }
