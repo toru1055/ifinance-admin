@@ -26,7 +26,7 @@ public class CommandHandler {
           } else if("scraper".equals(commands[0])) {
             new ScraperHandler().exec(commands);
           } else if("subscription".equals(commands[0])) {
-            //new SubscriptionHandler().exec(commands);
+            new SubscriptionHandler().exec(commands);
           }
         }
       } while(scan.hasNextLine());

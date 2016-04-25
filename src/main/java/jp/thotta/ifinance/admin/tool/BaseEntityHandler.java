@@ -1,5 +1,7 @@
 package jp.thotta.ifinance.admin.tool;
 
+import java.util.Scanner;
+
 public abstract class BaseEntityHandler {
   String tableName;
 
@@ -29,6 +31,50 @@ public abstract class BaseEntityHandler {
         }
       }
     }
+  }
+
+  protected Integer readInt(Scanner scan) {
+    String line = scan.nextLine();
+    if(line == null) {
+      return null;
+    }
+    Integer i = null;
+    if(line.length() > 0) {
+      try {
+        i = Integer.parseInt(line);
+      } catch(Exception e) {
+        i = null;
+      }
+    }
+    return i;
+  }
+
+  protected String readString(Scanner scan) {
+    String line = scan.nextLine();
+    if(line == null) {
+      return null;
+    }
+    if(line.length() > 0) {
+      return line;
+    } else {
+      return null;
+    }
+  }
+
+  protected Boolean readBoolean(Scanner scan) {
+    String line = scan.nextLine();
+    if(line == null) {
+      return null;
+    }
+    Boolean b = null;
+    if(line.length() > 0) {
+      if("true".equals(line)) {
+        b = true;
+      } else if("false".equals(line)) {
+        b = false;
+      }
+    }
+    return b;
   }
 
   abstract protected void add();
