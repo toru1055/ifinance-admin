@@ -67,6 +67,7 @@ public class SubscriptionHandler extends BaseEntityHandler {
       System.out.println("name: " + subscription.getName());
       System.out.println("url: " + subscription.getUrl());
       System.out.println("private: " + subscription.getPrivateFlag());
+      System.out.println("lastReadDate: " + subscription.getLastReadDate());
       System.out.println("interval(sec): " + subscription.getInterval());
       System.out.println("scraper: " + subscription.getScraper().getName());
       System.out.print("industry: ");
