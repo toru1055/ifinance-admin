@@ -1,7 +1,7 @@
 package jp.thotta.ifinance.admin.tool;
 
-import jp.thotta.ifinance.common.dao.IndustryManager;
-import jp.thotta.ifinance.common.entity.Industry;
+import jp.thotta.ifinance.common.dao.MasterDataManager;
+import jp.thotta.ifinance.common.entity.MasterData;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,12 +10,16 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Scanner;
 
-@Deprecated
-public class IndustryHandler extends BaseEntityHandler {
-    IndustryManager industryManager;
+/**
+ * Created by thotta on 2016/07/24.
+ */
+public class MasterDataHandler<T extends MasterData> extends BaseEntityHandler {
+    MasterDataManager<T> manager;
+    Class<T> clazz;
 
-    public IndustryHandler() {
-        industryManager = new IndustryManager();
+    public MasterDataHandler(Class<T> clazz) {
+        this.clazz = clazz;
+        this.manager = new MasterDataManager<T>(clazz);
     }
 
     @Override
@@ -25,32 +29,38 @@ public class IndustryHandler extends BaseEntityHandler {
         System.out.print("name: ");
         String name = scan.next();
         System.out.println("Input Name: " + name);
-        Industry industry = new Industry(name);
-        if (industryManager.add(industry)) {
-            System.out.println("Success.");
-        } else {
-            System.out.println("Failed.");
+        try {
+            T t = clazz.newInstance();
+            t.setName(name);
+            if (manager.add(t)) {
+                System.out.println("Success.");
+            } else {
+                System.out.println("Failed.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
         }
+
     }
 
     @Override
     protected void list() {
-        List<Industry> industries = industryManager.selectAll();
+        List<T> dataList = manager.selectAll();
         System.out.println("List " + tableName + ".");
         System.out.println("id\tname");
-        for (Industry industry : industries) {
-            System.out.println(industry.getId() + "\t" +
-                    industry.getName());
+        for (T t : dataList) {
+            System.out.println(t.getId() + "\t" + t.getName());
         }
     }
 
     @Override
     protected void show(Integer id) {
         System.out.println("Show " + tableName + ".");
-        Industry industry = industryManager.find(id);
-        if (industry != null) {
-            System.out.println("id: " + industry.getId());
-            System.out.println("name: " + industry.getName());
+        T t = manager.find(id);
+        if (t != null) {
+            System.out.println("id: " + t.getId());
+            System.out.println("name: " + t.getName());
         } else {
             System.out.println("id = " + id + ": does not exist");
         }
@@ -60,13 +70,13 @@ public class IndustryHandler extends BaseEntityHandler {
     protected void update(Integer id) {
         Scanner scan = new Scanner(System.in);
         System.out.println("Update " + tableName + ".");
-        Industry industry = industryManager.find(id);
-        if (industry != null) {
-            System.out.print("name(" + industry.getName() + "): ");
+        T t = manager.find(id);
+        if (t != null) {
+            System.out.print("name(" + t.getName() + "): ");
             String name = scan.next();
             if (name != null && name.length() > 0) {
-                industry.setName(name);
-                if (industryManager.update(industry)) {
+                t.setName(name);
+                if (manager.update(t)) {
                     System.out.println("Success.");
                 } else {
                     System.out.println("Failed.");
@@ -81,7 +91,7 @@ public class IndustryHandler extends BaseEntityHandler {
     protected void remove(Integer id) {
         System.out.println("Remove " + tableName + ".");
         try {
-            industryManager.remove(id);
+            manager.remove(id);
             System.out.println("Success.");
         } catch (Exception e) {
             System.out.println("Failed.");
@@ -92,10 +102,10 @@ public class IndustryHandler extends BaseEntityHandler {
     protected void _export(String filePath) {
         System.out.println("Export " + tableName + ".");
         try {
-            List<Industry> industries = industryManager.selectAll();
+            List<T> dataList = manager.selectAll();
             ObjectOutputStream oos
                     = new ObjectOutputStream(new FileOutputStream(filePath));
-            oos.writeObject(industries);
+            oos.writeObject(dataList);
             oos.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,8 +118,8 @@ public class IndustryHandler extends BaseEntityHandler {
         try {
             ObjectInputStream ios
                     = new ObjectInputStream(new FileInputStream(filePath));
-            List<Industry> industries = (List<Industry>) ios.readObject();
-            if (industryManager._import(industries)) {
+            List<T> dataList = (List<T>) ios.readObject();
+            if (manager._import(dataList)) {
                 System.out.println("Success.");
             } else {
                 System.out.println("Failed.");
@@ -119,5 +129,4 @@ public class IndustryHandler extends BaseEntityHandler {
             e.printStackTrace();
         }
     }
-
 }
