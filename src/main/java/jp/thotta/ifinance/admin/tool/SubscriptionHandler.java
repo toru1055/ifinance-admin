@@ -32,6 +32,8 @@ public class SubscriptionHandler extends BaseEntityHandler {
         String url = readString(scan);
         System.out.print("private(true/false): ");
         Boolean privateFlag = readBoolean(scan);
+        System.out.print("active(true/false): ");
+        Boolean activeFlag = readBoolean(scan);
         System.out.print("interval(sec): ");
         Integer interval = readInt(scan);
         System.out.print("scraper_id: ");
@@ -48,6 +50,9 @@ public class SubscriptionHandler extends BaseEntityHandler {
         }
         if (privateFlag != null) {
             subscription.setPrivateFlag(privateFlag);
+        }
+        if (activeFlag != null) {
+            subscription.setActiveFlag(activeFlag);
         }
         if (interval != null) {
             subscription.setInterval(interval);
@@ -69,11 +74,14 @@ public class SubscriptionHandler extends BaseEntityHandler {
     protected void list() {
         List<Subscription> subscriptions = subscriptionManager.selectAll();
         System.out.println("List " + tableName + ".");
-        System.out.println("id\tname\turl");
+        System.out.println("id\tname\turl\tindustry");
         for (Subscription subscription : subscriptions) {
-            System.out.println(subscription.getId() + "\t" +
-                    subscription.getName() + "\t" +
-                    subscription.getUrl());
+            System.out.println(
+                    subscription.getId() + "\t" +
+                            subscription.getName() + "\t" +
+                            subscription.getUrl() + "\t" +
+                            subscription.getFixedIndustry().getName()
+            );
         }
     }
 
@@ -86,6 +94,7 @@ public class SubscriptionHandler extends BaseEntityHandler {
             System.out.println("name: " + subscription.getName());
             System.out.println("url: " + subscription.getUrl());
             System.out.println("private: " + subscription.getPrivateFlag());
+            System.out.println("active: " + subscription.isActive());
             System.out.println("lastReadDate: " + subscription.getLastReadDate());
             System.out.println("interval(sec): " + subscription.getInterval());
             System.out.println("scraper: " + subscription.getScraper().getName());
@@ -113,6 +122,8 @@ public class SubscriptionHandler extends BaseEntityHandler {
             Integer interval = readInt(scan);
             System.out.print("private(" + subscription.getPrivateFlag() + ")[true/false]: ");
             Boolean privateFlag = readBoolean(scan);
+            System.out.print("active(" + subscription.isActive() + ")[true/false]: ");
+            Boolean activeFlag = readBoolean(scan);
             System.out.print("scraper_id(" + subscription.getScraper().getId() + "): ");
             Integer scraperId = readInt(scan);
             System.out.print("industry_id(" +
@@ -129,6 +140,9 @@ public class SubscriptionHandler extends BaseEntityHandler {
             }
             if (privateFlag != null) {
                 subscription.setPrivateFlag(privateFlag);
+            }
+            if (activeFlag != null) {
+                subscription.setActiveFlag(activeFlag);
             }
             if (interval != null) {
                 subscription.setInterval(interval);

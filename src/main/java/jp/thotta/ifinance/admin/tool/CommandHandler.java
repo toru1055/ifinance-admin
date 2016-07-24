@@ -25,7 +25,7 @@ public class CommandHandler {
                     new MasterDataHandler<Scraper>(Scraper.class).exec(commands);
                 } else if ("subscription".equals(commands[0])) {
                     new SubscriptionHandler().exec(commands);
-                } else if ("market_index_collector".equals(commands[0])) {
+                } else if ("mi_collector".equals(commands[0])) {
                     new MasterDataHandler<MarketIndexCollector>(MarketIndexCollector.class).exec(commands);
                 }
             }
