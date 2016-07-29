@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Scanner;
 
+@Deprecated
 public class ScraperHandler extends BaseEntityHandler {
     ScraperManager scraperManager;
 

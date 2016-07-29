@@ -1,7 +1,6 @@
 package jp.thotta.ifinance.admin.tool;
 
-import jp.thotta.ifinance.common.dao.IndustryManager;
-import jp.thotta.ifinance.common.dao.ScraperManager;
+import jp.thotta.ifinance.common.dao.MasterDataManager;
 import jp.thotta.ifinance.common.dao.SubscriptionManager;
 import jp.thotta.ifinance.common.entity.Industry;
 import jp.thotta.ifinance.common.entity.Scraper;
@@ -12,13 +11,13 @@ import java.util.Scanner;
 
 public class SubscriptionHandler extends BaseEntityHandler {
     SubscriptionManager subscriptionManager;
-    IndustryManager industryManager;
-    ScraperManager scraperManager;
+    MasterDataManager<Industry> industryManager;
+    MasterDataManager<Scraper> scraperManager;
 
     public SubscriptionHandler() {
         subscriptionManager = new SubscriptionManager();
-        industryManager = new IndustryManager();
-        scraperManager = new ScraperManager();
+        industryManager = new MasterDataManager<Industry>(Industry.class);
+        scraperManager = new MasterDataManager<Scraper>(Scraper.class);
     }
 
     @Override
