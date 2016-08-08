@@ -91,7 +91,7 @@ public class MarketIndexMasterHandler extends BaseEntityHandler {
         }
         System.out.print("name(" + miMaster.getName() + "): ");
         String name = readString(scan);
-        System.out.print("collector_id" + miMaster.getMarketIndexCollector().getId() + "): ");
+        System.out.print("collector_id(" + miMaster.getMarketIndexCollector().getId() + "): ");
         Integer collector_id = readInt(scan);
         MarketIndexCollector miCollector
                 = collector_id != null ?
@@ -111,6 +111,11 @@ public class MarketIndexMasterHandler extends BaseEntityHandler {
         }
         if (activeFlag != null) {
             miMaster.setActiveFlag(activeFlag);
+        }
+        if (miMasterManager.update(miMaster)) {
+            System.out.println("Success.");
+        } else {
+            System.out.println("Failed.");
         }
     }
 
